@@ -1,14 +1,6 @@
 <?php
 namespace Aura\Html\Escaper;
 
-use Aura\Html\FakePhp;
-
-// trick PHP into using this function instead of the native function
-function function_exists($name)
-{
-    return FakePhp::function_exists($name);
-}
-
 /**
  *
  * Based almost entirely on Zend\Escaper by Padraic Brady et al. and modified
@@ -23,39 +15,6 @@ abstract class AbstractEscaperTest extends \PHPUnit_Framework_TestCase
 
     abstract public function test__construct();
 
-    protected function setUp()
-    {
-        FakePhp::$function_exists['iconv'] = \function_exists('iconv');
-        FakePhp::$function_exists['mb_convert_encoding'] = \function_exists('mb_convert_encoding');
-    }
-
-    public function testMissingIconvExtension()
-    {
-        FakePhp::$function_exists['iconv'] = false;
-        FakePhp::$function_exists['mb_convert_encoding'] = true;
-        $this->escaper->setEncoding('iso-8859-1');
-        $actual = $this->escaper->toUtf8('x');
-        $this->assertSame('x', $actual);
-    }
-
-    public function testMissingMbstringExtension()
-    {
-        FakePhp::$function_exists['iconv'] = true;
-        FakePhp::$function_exists['mb_convert_encoding'] = false;
-        $this->escaper->setEncoding('iso-8859-1');
-        $actual = $this->escaper->toUtf8('x');
-        $this->assertSame('x', $actual);
-    }
-
-    public function testMissingBothExtensions()
-    {
-        FakePhp::$function_exists['iconv'] = false;
-        FakePhp::$function_exists['mb_convert_encoding'] = false;
-        $this->escaper->setEncoding('iso-8859-1');
-        $this->setExpectedException('Aura\Html\Exception\ExtensionNotInstalled');
-        $this->escaper->toUtf8('x');
-    }
-
     public function testSetAndGetEncoding()
     {
         $this->escaper->setEncoding('macroman');
@@ -67,7 +26,7 @@ abstract class AbstractEscaperTest extends \PHPUnit_Framework_TestCase
 
     public function testToUtf8()
     {
-        $this->escaper->setEncoding('iso-8859-1');
+        $this->escaper->setEncoding('iso8859-1');
         $this->assertSame('', $this->escaper->toUtf8(''));
         $this->assertSame('foo', $this->escaper->toUtf8('foo'));
     }
@@ -81,7 +40,7 @@ abstract class AbstractEscaperTest extends \PHPUnit_Framework_TestCase
 
     public function testFromUtf8()
     {
-        $this->escaper->setEncoding('iso-8859-1');
+        $this->escaper->setEncoding('iso8859-1');
         $this->assertSame('', $this->escaper->fromUtf8(''));
         $this->assertSame('foo', $this->escaper->fromUtf8('foo'));
     }

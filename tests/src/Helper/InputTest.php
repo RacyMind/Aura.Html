@@ -41,11 +41,6 @@ class InputTest extends AbstractHelperTest
         ));
     }
 
-    public function test__invoke()
-    {
-        $this->assertSame($this->helper, $this->helper->__invoke());
-    }
-
     public function testCheckbox()
     {
         $spec = array(

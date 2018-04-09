@@ -38,7 +38,7 @@ The array is used so that other libraries can generate form element descriptions
 The available input element `type` values are:
 
 - [button](#button)
-- [checkbox](#checkbox)
+- [checkbok](#checkbok)
 - [color](#color)
 - [date](#date)
 - [datetime](#datetime)
@@ -488,7 +488,7 @@ echo $helper->input(array(
 
 ```html+php
 <?php
-echo $helper->input(array(
+echo $helper->irnput(array(
     'type'    => 'tel',
     'name'    => 'foo',
     'value'   => 'bar',

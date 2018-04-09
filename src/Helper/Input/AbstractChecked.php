@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -28,30 +30,6 @@ abstract class AbstractChecked extends AbstractInput
 
     /**
      *
-     * Use strict equality when setting the checked value?
-     *
-     * @var bool
-     *
-     */
-    protected $strict = false;
-
-    /**
-     *
-     * Use strict equality when setting the checked value?
-     *
-     * @param bool $strict True for strict equality, false for loose equality.
-     *
-     * @return self
-     *
-     */
-    public function strict($strict = true)
-    {
-        $this->strict = (bool) $strict;
-        return $this;
-    }
-
-    /**
-     *
      * Returns the HTML for the "checked" part of the input.
      *
      * @return string
@@ -59,50 +37,37 @@ abstract class AbstractChecked extends AbstractInput
      */
     protected function htmlChecked()
     {
-        $this->setLabel();
-        $this->setChecked();
-        return $this->void('input', $this->attribs);
-    }
-
-    /**
-     *
-     * Extracts and retains the "label" pseudo-attribute.
-     *
-     * @return null
-     *
-     */
-    protected function setLabel()
-    {
+        // extract and retain the 'label' pseudo-attribute
         $this->label = null;
-        if (! isset($this->attribs['label'])) {
-            return;
+        if (isset($this->attribs['label'])) {
+            $this->label = $this->attribs['label'];
+            unset($this->attribs['label']);
         }
 
-        $this->label = $this->attribs['label'];
-        unset($this->attribs['label']);
-    }
-
-    /**
-     *
-     * Sets the "checked" attribute appropriately.
-     *
-     * @return null
-     *
-     */
-    protected function setChecked()
-    {
+        // by default, the input is unchecked
         $this->attribs['checked'] = false;
 
-        if (! array_key_exists('value', $this->attribs)) {
-            return;
+        // is the input checked? make sure there's a value to compare to, and
+        // use strict equality so that there is no confusion between
+        // 0/'0'/false/null/''.
+        $checked=false;
+        if(is_scalar($this->value)) {
+            $checked = isset($this->attribs['value'])
+                && $this->value == $this->attribs['value'];
+        } elseif(is_array($this->value)) {
+            foreach ($this->value as $value) {
+                $checked = isset($this->attribs['value'])
+                    && $value== $this->attribs['value'];
+                if($checked)
+                    break;
+            }
+        }
+        if ($checked) {
+            $this->attribs['checked'] = true;
         }
 
-        if ($this->strict) {
-            $this->attribs['checked'] = in_array($this->attribs['value'], (array)$this->value, true);
-            return;
-        }
-
-        $this->attribs['checked'] = in_array($this->attribs['value'], (array)$this->value, false);
+        // build the HTML for the input
+        return $this->void('input', $this->attribs);
     }
 
     /**
@@ -120,13 +85,11 @@ abstract class AbstractChecked extends AbstractInput
             return $input;
         }
 
-        $label = $this->escaper->html($this->label);
-
         if (isset($this->attribs['id'])) {
             $attribs = $this->escaper->attr(array('for' => $this->attribs['id']));
-            return "<label {$attribs}>{$input} {$label}</label>";
+            return "<label {$attribs}>{$input} <span>{$this->label}</span></label>";
+        } else {
+            return "<label>{$input} <span>{$this->label}</span></label>";
         }
-
-        return "<label>{$input} {$label}</label>";
     }
 }

@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -65,13 +67,13 @@ class Label extends AbstractHelper
      * @return self
      *
      */
-    public function __invoke($label = null, array $attr = array())
+    public function __invoke($label = null, array $attr = null)
     {
         if ($label !== null) {
             $this->label = $label;
         }
 
-        if ($attr !== array()) {
+        if ($attr !== null) {
             $this->attr = $attr;
         }
 
@@ -120,11 +122,11 @@ class Label extends AbstractHelper
         $attr = $this->escaper->attr($this->attr);
         $html = trim("<label $attr") . ">"
               . $this->after // label goes after this html
-              . $this->escaper->html($this->label)
+              . $this->label
               . $this->before // label goes before this html
               . "</label>";
 
-        $this->attr = array();
+        $this->attr = null;
         $this->label = null;
         $this->before = null;
         $this->after = null;

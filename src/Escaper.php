@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -168,7 +170,7 @@ class Escaper
      *
      * Escapes for unquoted HTML attribute context.
      *
-     * @param string|array $raw The raw attribute (or array of attributes).
+     * @param string $raw The raw string.
      *
      * @return string The escaped string.
      *

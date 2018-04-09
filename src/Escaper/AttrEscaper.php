@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -78,7 +80,7 @@ class AttrEscaper extends AbstractEscaper
      * attributes to a quoted-and-escaped attribute string.
      *
      * When converting associative array of HTML attributes to an escaped
-     * attribute string, keys are attribute names, and values are attribute
+     * attribute string, leys are attribute names, and values are attribute
      * values. A value of boolean true indicates a minimized attribute. For
      *  example, `['disabled' => 'disabled']` results in `disabled="disabled"`,
      * but `['disabled' => true]` results in `disabled`.  Values of `false` or

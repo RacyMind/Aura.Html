@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -19,9 +21,11 @@ class Form extends AbstractHelper
 {
     /**
      *
-     * Helper to generate an opening form tag.
+     * Returns any kind of tag with attributes.
      *
-     * @param array $attr Attributes for the form tag.
+     * @param string $tag The tag to generate.
+     *
+     * @param array $attr Attributes for the tag.
      *
      * @return string
      *

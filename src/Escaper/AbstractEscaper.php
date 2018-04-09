@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -44,7 +46,7 @@ abstract class AbstractEscaper
         '1251', '1252', '866', '932', '936', '950', 'big5', 'big5-hkscs',
         'cp1251', 'cp1252', 'cp866', 'cp932', 'euc-jp', 'eucjp', 'eucjp-win',
         'gb2312', 'ibm866', 'iso-8859-1', 'iso-8859-15', 'iso-8859-5',
-        'iso-8859-1', 'iso-8859-15', 'iso-8859-5', 'koi8-r', 'koi8-ru', 'koi8r',
+        'iso8859-1', 'iso8859-15', 'iso8859-5', 'koi8-r', 'koi8-ru', 'koi8r',
         'macroman', 'shift_jis', 'sjis', 'sjis-win', 'utf-8', 'win-1251',
         'windows-1251', 'windows-1252',
     );

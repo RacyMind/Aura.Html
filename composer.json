@@ -36,16 +36,9 @@
             "config": {
                 "common": "Aura\\Html\\_Config\\Common"
             }
-        }
-    },
-    "require-dev": {
-        "aura/di": "~2.0",
-        "phpunit/phpunit": "~5.7 || ~4.8"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Aura\\Html\\": "tests/",
-            "Aura\\Di\\": "vendor/aura/di/tests/"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
         }
     }
 }

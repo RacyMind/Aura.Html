@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -27,7 +29,6 @@ class Textarea extends AbstractInput
     public function __toString()
     {
         $attribs = $this->escaper->attr($this->attribs);
-        $value = $this->escaper->html($this->value);
-        return "<textarea {$attribs}>{$value}</textarea>";
+        return "<textarea {$attribs}>{$this->value}</textarea>";
     }
 }

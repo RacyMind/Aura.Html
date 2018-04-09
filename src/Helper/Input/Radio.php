@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -48,7 +50,11 @@ class Radio extends AbstractChecked
     {
         $html = '';
         $radio = clone($this);
+        $id=$this->attribs['id'];
+        $i=0;
         foreach ($this->options as $value => $label) {
+            $i++;
+            $this->attribs['id']=$id.$i;
             $this->attribs['value'] = $value;
             $this->attribs['label'] = $label;
             $html .= $radio(array(

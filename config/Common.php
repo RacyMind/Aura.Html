@@ -3,7 +3,7 @@ namespace Aura\Html\_Config;
 
 use Aura\Di\Config;
 use Aura\Di\Container;
-use Aura\Html\Escaper;
+use Aura\Html\Functions\EscaperFunctions;
 
 class Common extends Config
 {
@@ -12,25 +12,11 @@ class Common extends Config
         /**
          * Services
          */
-        $di->set('aura/html:escaper', $di->lazyNew('Aura\Html\Escaper'));
-        $di->set('aura/html:helper', $di->lazyNew('Aura\Html\HelperLocator'));
-
-        /**
-         * Aura\Html\Escaper
-         */
-        $di->params['Aura\Html\Escaper'] = array(
-            'html' => $di->lazyNew('Aura\Html\Escaper\HtmlEscaper'),
-            'attr' => $di->lazyNew('Aura\Html\Escaper\AttrEscaper'),
-            'css' => $di->lazyNew('Aura\Html\Escaper\CssEscaper'),
-            'js' => $di->lazyNew('Aura\Html\Escaper\JsEscaper'),
-        );
-
-        /**
-         * Aura\Html\Escaper\AttrEscaper
-         */
-        $di->params['Aura\Html\Escaper\AttrEscaper'] = array(
-            'html' => $di->lazyNew('Aura\Html\Escaper\HtmlEscaper'),
-        );
+        $di->set('html_escaper', $di->lazy(array(
+            $di->lazyNew('Aura\Html\EscaperFactory'),
+            'newInstance'
+        )));
+        $di->set('html_helper', $di->lazyNew('Aura\Html\HelperLocator'));
 
         /**
          * Aura\Html\HelperLocator
@@ -39,7 +25,7 @@ class Common extends Config
             'a'                 => $di->lazyNew('Aura\Html\Helper\Anchor'),
             'anchor'            => $di->lazyNew('Aura\Html\Helper\Anchor'),
             'base'              => $di->lazyNew('Aura\Html\Helper\Base'),
-            'escape'            => $di->lazyGet('aura/html:escaper'),
+            'escape'            => $di->lazyGet('html_escaper'),
             'form'              => $di->lazyNew('Aura\Html\Helper\Form'),
             'img'               => $di->lazyNew('Aura\Html\Helper\Img'),
             'image'             => $di->lazyNew('Aura\Html\Helper\Img'),
@@ -59,7 +45,7 @@ class Common extends Config
         /**
          * Aura\Html\Helper\AbstractHelper
          */
-        $di->params['Aura\Html\Helper\AbstractHelper']['escaper'] = $di->lazyGet('aura/html:escaper');
+        $di->params['Aura\Html\Helper\AbstractHelper']['escaper'] = $di->lazyGet('html_escaper');
 
         /**
          * Aura\Html\Helper\Input
@@ -95,6 +81,6 @@ class Common extends Config
 
     public function modify(Container $di)
     {
-        Escaper::setStatic($di->get('aura/html:escaper'));
+        \Aura\Html\Escaper::setStatic($di->get('html_escaper'));
     }
 }

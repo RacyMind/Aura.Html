@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -28,19 +30,13 @@ class Title extends AbstractHelper
 
     /**
      *
-     * Returns the helper so you can call methods on it; alternatively, if you
-     * pass a title string, it will be as you called `append()`.
-     *
-     * @param string $text Text to append to the existing title.
+     * Returns the helper so you can call methods on it.
      *
      * @return self
      *
      */
-    public function __invoke($text = null)
+    public function __invoke()
     {
-        if ($text) {
-            $this->append($text);
-        }
         return $this;
     }
 

@@ -12,10 +12,6 @@ class StylesTest extends AbstractHelperTest
         $styles = $this->helper;
         $actual = $styles();
         $this->assertInstanceOf('Aura\Html\Helper\Styles', $actual);
-
-        $actual = $styles('style.css')->__toString();
-        $expect = '    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />' . PHP_EOL;
-        $this->assertSame($expect, $actual);
     }
 
     public function testAddAndGet()
@@ -51,31 +47,6 @@ class StylesTest extends AbstractHelperTest
                 . '  <link rel="stylesheet" href="/css/middle.css" type="text/css" media="print" />' . PHP_EOL
                 . '  <!--[if ie6]><link rel="stylesheet" href="/css/ie6.css" type="text/css" media="print" /><![endif]-->' . PHP_EOL
                 . '  <link rel="stylesheet" href="/css/last.css" type="text/css" media="screen" />' . PHP_EOL;
-
-        $this->assertSame($expect, $actual);
-    }
-
-    public function testInternal()
-    {
-        $styles = $this->helper;
-        $styles->addInternal('.foo{color:red;}');
-        $styles->addCondInternal('ie6', '.foo{color:yellow;}');
-
-        $styles->beginInternal();
-        echo ".bar{color:green;}";
-        $styles->endInternal();
-
-        $styles->beginCondInternal('ie6');
-        echo ".bar{color:pink;}";
-        $styles->endInternal();
-
-
-        $actual = $styles->__toString();
-
-        $expect = '    <style type="text/css" media="screen">.foo{color:red;}</style>' . PHP_EOL
-            . '    <!--[if ie6]><style type="text/css" media="screen">.foo{color:yellow;}</style><![endif]-->' . PHP_EOL
-            . '    <style type="text/css" media="screen">.bar{color:green;}</style>' . PHP_EOL
-            . '    <!--[if ie6]><style type="text/css" media="screen">.bar{color:pink;}</style><![endif]-->' . PHP_EOL;
 
         $this->assertSame($expect, $actual);
     }

@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -30,18 +32,11 @@ abstract class AbstractSeries extends AbstractHelper
      *
      * Returns the helper so you can call methods on it.
      *
-     * If you pass arguments to __invoke(), it will call `$this->add()` with
-     * those arguments.
-     *
      * @return self
      *
      */
     public function __invoke()
     {
-        $args = func_get_args();
-        if ($args) {
-            call_user_func_array(array($this, 'add'), $args);
-        }
         return $this;
     }
 

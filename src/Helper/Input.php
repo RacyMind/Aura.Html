@@ -3,6 +3,8 @@
  *
  * This file is part of Aura for PHP.
  *
+ * @package Aura.Html
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -25,7 +27,7 @@ class Input extends HelperLocator
      *
      * @param array $spec The element specification.
      *
-     * @return mixed
+     * @return string
      *
      */
     public function __invoke(array $spec = null)

@@ -9,18 +9,17 @@ namespace Aura\Html\Escaper;
  * under the New BSD License (http://framework.zend.com/license/new-bsd).
  *
  */
-class CssEscaperTest extends AbstractEscaperTest
+class JsEscaperTest extends AbstractEscaperTest
 {
     public function setUp()
     {
-        parent::setUp();
-        $this->escaper = new CssEscaper;
+        $this->escaper = new JsEscaper;
     }
 
     public function test__construct()
     {
-        $escaper = new CssEscaper('iso-8859-1');
-        $this->assertSame('iso-8859-1', $escaper->getEncoding());
+        $escaper = new JsEscaper('iso8859-1');
+        $this->assertSame('iso8859-1', $escaper->getEncoding());
     }
 
     public function test__invoke()
@@ -30,17 +29,17 @@ class CssEscaperTest extends AbstractEscaperTest
 
         $chars = array(
             /* HTML special chars - escape without exception to hex */
-            '<'     => '\\3C ',
-            '>'     => '\\3E ',
-            '\''    => '\\27 ',
-            '"'     => '\\22 ',
-            '&'     => '\\26 ',
+            '<'     => '\\x3C',
+            '>'     => '\\x3E',
+            '\''    => '\\x27',
+            '"'     => '\\x22',
+            '&'     => '\\x26',
             /* Characters beyond ASCII value 255 to unicode escape */
-            'Ā'     => '\\100 ',
+            'Ā'     => '\\u0100',
             /* Immune chars excluded */
-            ','     => '\\2C ',
-            '.'     => '\\2E ',
-            '_'     => '\\5F ',
+            ','     => ',',
+            '.'     => '.',
+            '_'     => '_',
             /* Basic alnums exluded */
             'a'     => 'a',
             'A'     => 'A',
@@ -49,12 +48,12 @@ class CssEscaperTest extends AbstractEscaperTest
             '0'     => '0',
             '9'     => '9',
             /* Basic control characters and null */
-            "\r"    => '\\D ',
-            "\n"    => '\\A ',
-            "\t"    => '\\9 ',
-            "\0"    => '\\0 ',
+            "\r"    => '\\x0D',
+            "\n"    => '\\x0A',
+            "\t"    => '\\x09',
+            "\0"    => '\\x00',
             /* Encode spaces for quoteless attribute protection */
-            ' '     => '\\20 ',
+            ' '     => '\\x20',
         );
 
         foreach ($chars as $key => $val) {
@@ -68,7 +67,7 @@ class CssEscaperTest extends AbstractEscaperTest
 
     public function test_ranges()
     {
-        $immune = array(); // CSS has no exceptions to escaping ranges
+        $immune = array(',', '.', '_'); // Exceptions to escaping ranges
         for ($chr=0; $chr < 0xFF; $chr++) {
             if ($chr >= 0x30 && $chr <= 0x39
                 || $chr >= 0x41 && $chr <= 0x5A
@@ -78,11 +77,15 @@ class CssEscaperTest extends AbstractEscaperTest
                 $this->assertEquals($literal, $this->escaper->__invoke($literal));
             } else {
                 $literal = $this->codepointToUtf8($chr);
-                $this->assertNotEquals(
-                    $literal,
-                    $this->escaper->__invoke($literal),
-                    $literal . ' should be escaped!'
-                );
+                if (in_array($literal, $immune)) {
+                    $this->assertEquals($literal, $this->escaper->__invoke($literal));
+                } else {
+                    $this->assertNotEquals(
+                        $literal,
+                        $this->escaper->__invoke($literal),
+                        $literal . ' should be escaped!'
+                    );
+                }
             }
         }
     }
